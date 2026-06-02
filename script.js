@@ -428,6 +428,7 @@ if (music && musicToggle) {
   music.src = invitationConfig.music.src;
   music.volume = invitationConfig.music.volume;
   music.playsInline = true;
+  music.load();
 
   const updateMusicButton = () => {
     if (music.paused) {
@@ -512,9 +513,16 @@ if (music && musicToggle) {
 if (welcomeScreen && openInvitationBtn) {
   document.body.classList.add("welcome-active");
 
-  openInvitationBtn.addEventListener("click", async () => {
+  const primeWelcomeMusic = () => {
+    playBackgroundMusic();
+  };
+
+  openInvitationBtn.addEventListener("pointerdown", primeWelcomeMusic, { passive: true });
+  openInvitationBtn.addEventListener("touchstart", primeWelcomeMusic, { passive: true });
+
+  openInvitationBtn.addEventListener("click", () => {
+    primeWelcomeMusic();
     welcomeScreen.classList.add("is-hidden");
     document.body.classList.remove("welcome-active");
-    await playBackgroundMusic();
   });
 }
