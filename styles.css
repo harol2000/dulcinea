@@ -76,7 +76,7 @@ h3 {
   place-items: center;
   overflow: hidden;
   background-color: #f9dce5;
-  background-image: var(--welcome-desktop, url("/images/plantilla_escritorio.png"));
+  background-image: var(--welcome-desktop, url("./public/images/plantilla_escritorio.png"));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1365,7 +1365,7 @@ h3 {
 
 @media (max-width: 768px) {
   .welcome-screen {
-    background-image: var(--welcome-mobile, url("/images/plantilla_celular.png"));
+    background-image: var(--welcome-mobile, url("./public/images/plantilla_celular.png"));
     background-position: center top;
   }
 

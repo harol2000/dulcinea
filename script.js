@@ -13,9 +13,9 @@ const invitationConfig = {
     mobile: "./public/images/plantilla_celular.png",
   },
   welcome: {
-    desktopBackground: "/images/plantilla_escritorio.png",
-    mobileBackground: "/images/plantilla_celular.png",
-    logo: "/images/logo_dulcinea.png",
+    desktopBackground: "./public/images/plantilla_escritorio.png",
+    mobileBackground: "./public/images/plantilla_celular.png",
+    logo: "./public/images/logo_dulcinea.png",
   },
   event: {
     date: "Viernes 5 de junio",
@@ -56,7 +56,7 @@ const invitationConfig = {
   },
   music: {
     // Cambia esta ruta si reemplazas la canción principal.
-    src: "/with_or_with_you.mp3",
+    src: "./public/with_or_with_you.mp3",
     volume: 0.35,
   },
   content: {
