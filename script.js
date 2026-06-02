@@ -1,5 +1,7 @@
 // Cambia aquí los datos principales de la invitación sin tocar el HTML.
 const invitationConfig = {
+  // Cambia este valor cuando reemplaces imágenes con el mismo nombre para forzar actualización.
+  assetVersion: "2026-06-02-1",
   business: {
     openingLabel: "Grand Opening",
     name: "Dulcinea",
@@ -11,15 +13,15 @@ const invitationConfig = {
     mobile: "./public/images/plantilla_celular.png",
   },
   event: {
-    date: "7 de junio",
-    time: "10:00 a. m.",
+    date: "Viernes 5 de mayo",
+    time: "5:30 p. m.",
     // Cambia esta fecha/hora para actualizar la cuenta regresiva del sitio.
-    countdownTarget: "2026-06-07T10:00:00",
+    countdownTarget: "2028-05-05T17:30:00",
     address: "Jr. Huascar S/N, Ref. Frente al Mercado Modelo Pichari",
     googleMapsUrl: "https://maps.app.goo.gl/pydPWiMrCYSjDKtp6",
     // Pega aquí tu iframe definitivo de Google Maps cuando lo tengas listo.
     mapEmbedHtml:
-      '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d973.7377436922782!2d-73.82706099499316!3d-12.51940681622371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x910d3d68ca8c5fdb%3A0x22747f8660946c5d!2sPlaza%20Mayor%20De%20Pichari!5e0!3m2!1ses-419!2spe!4v1780360864084!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+      '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d834.9047337878643!2d-73.8268573845473!3d-12.519193000277571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses-419!2spe!4v1780418027008!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
   },
   contact: {
     phone: "984797618",
@@ -152,6 +154,22 @@ const galleryItems = [
   },
 ];
 
+// Edita este arreglo para actualizar facilmente la seccion Especialidades.
+const specialties = [
+  {
+    title: "Sodas Italianas",
+    description:
+      "Bebidas coloridas, dulces y burbujeantes, perfectas para refrescarte y celebrar la inauguracion.",
+    images: ["bebida_mora_hierbabuena.png", "bebida_fresa_crema_naranja.png"],
+  },
+  {
+    title: "Popping Boba",
+    description:
+      "Bebida refrescante con perlas explosivas de sabor, ideal para disfrutar algo diferente y divertido.",
+    images: ["popping_boba.png"],
+  },
+];
+
 const heroSection = document.querySelector(".hero-inauguracion");
 heroSection.style.setProperty("--hero-desktop", `url("${invitationConfig.heroImages.desktop}")`);
 heroSection.style.setProperty("--hero-mobile", `url("${invitationConfig.heroImages.mobile}")`);
@@ -166,6 +184,27 @@ const setLink = (selector, href) => {
   document.querySelectorAll(selector).forEach((node) => {
     node.href = href;
   });
+};
+
+const withAssetVersion = (path) => `${path}?v=${encodeURIComponent(invitationConfig.assetVersion)}`;
+const specialtyImageBases = ["./public/images/", "./public/images/productos/"];
+const resolveSpecialtyCandidates = (filename) =>
+  specialtyImageBases.map((basePath) => withAssetVersion(`${basePath}${filename}`));
+const setImageSourceWithFallback = (imageNode, candidates) => {
+  let currentIndex = 0;
+
+  const applyCandidate = () => {
+    imageNode.src = candidates[currentIndex];
+  };
+
+  imageNode.addEventListener("error", () => {
+    currentIndex += 1;
+    if (currentIndex < candidates.length) {
+      applyCandidate();
+    }
+  });
+
+  applyCandidate();
 };
 
 setText("[data-opening-label]", invitationConfig.business.openingLabel);
@@ -255,6 +294,38 @@ invitationConfig.features.forEach((feature) => {
   featureGrid.appendChild(card);
 });
 
+const specialtiesGrid = document.querySelector("[data-specialties-grid]");
+specialties.forEach((item) => {
+  const card = document.createElement("article");
+  card.className = "specialty-card";
+  const imageGroup = document.createElement("div");
+  imageGroup.className = `specialty-images specialty-images--${item.images.length > 1 ? "double" : "single"}`;
+
+  item.images.forEach((filename, index) => {
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "specialty-image-wrap";
+
+    const image = document.createElement("img");
+    image.alt = `${item.title} ${index + 1}`;
+    image.loading = "lazy";
+    setImageSourceWithFallback(image, resolveSpecialtyCandidates(filename));
+
+    imageWrap.appendChild(image);
+    imageGroup.appendChild(imageWrap);
+  });
+
+  const copy = document.createElement("div");
+  copy.className = "specialty-copy";
+  copy.innerHTML = `
+    <h3>${item.title}</h3>
+    <p>${item.description}</p>
+  `;
+
+  card.appendChild(imageGroup);
+  card.appendChild(copy);
+  specialtiesGrid.appendChild(card);
+});
+
 const galleryGrid = document.querySelector("[data-gallery-grid]");
 galleryItems.forEach((item) => {
   const card = document.createElement("figure");
@@ -289,23 +360,25 @@ if (invitationConfig.event.mapEmbedHtml.trim()) {
 }
 
 const socialLinks = document.querySelector("[data-social-links]");
-[
-  {
-    label: invitationConfig.contact.facebookLabel,
-    url: invitationConfig.contact.facebookUrl,
-  },
-  {
-    label: invitationConfig.contact.instagramLabel,
-    url: invitationConfig.contact.instagramUrl,
-  },
-].forEach((item) => {
-  const node = document.createElement(item.url ? "a" : "span");
-  node.className = "footer-link";
-  node.textContent = item.label;
-  if (item.url) {
-    node.href = item.url;
-    node.target = "_blank";
-    node.rel = "noreferrer";
-  }
-  socialLinks.appendChild(node);
-});
+if (socialLinks) {
+  [
+    {
+      label: invitationConfig.contact.facebookLabel,
+      url: invitationConfig.contact.facebookUrl,
+    },
+    {
+      label: invitationConfig.contact.instagramLabel,
+      url: invitationConfig.contact.instagramUrl,
+    },
+  ].forEach((item) => {
+    const node = document.createElement(item.url ? "a" : "span");
+    node.className = "footer-link";
+    node.textContent = item.label;
+    if (item.url) {
+      node.href = item.url;
+      node.target = "_blank";
+      node.rel = "noreferrer";
+    }
+    socialLinks.appendChild(node);
+  });
+}
