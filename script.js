@@ -3,7 +3,7 @@ const invitationConfig = {
   // Cambia este valor cuando reemplaces imágenes con el mismo nombre para forzar actualización.
   assetVersion: "2026-06-02-1",
   business: {
-    openingLabel: "Grand Opening",
+    openingLabel: "Gran Inauguración",
     name: "Dulcinea",
     tagline: "Heladería & Cafetería",
   },
@@ -11,6 +11,11 @@ const invitationConfig = {
     // Reemplaza estas rutas si cambias las imágenes base del hero.
     desktop: "./public/images/plantilla_escritorio.png",
     mobile: "./public/images/plantilla_celular.png",
+  },
+  welcome: {
+    desktopBackground: "/images/plantilla_escritorio.png",
+    mobileBackground: "/images/plantilla_celular.png",
+    logo: "/images/logo_dulcinea.png",
   },
   event: {
     date: "Viernes 5 de junio",
@@ -51,7 +56,7 @@ const invitationConfig = {
   },
   music: {
     // Cambia esta ruta si reemplazas la canción principal.
-    src: "./public/with_or_with_you.mp3",
+    src: "/with_or_with_you.mp3",
     volume: 0.35,
   },
   content: {
@@ -195,6 +200,18 @@ const specialties = [
 const heroSection = document.querySelector(".hero-inauguracion");
 heroSection.style.setProperty("--hero-desktop", `url("${invitationConfig.heroImages.desktop}")`);
 heroSection.style.setProperty("--hero-mobile", `url("${invitationConfig.heroImages.mobile}")`);
+
+const welcomeScreen = document.getElementById("welcomeScreen");
+if (welcomeScreen) {
+  welcomeScreen.style.setProperty(
+    "--welcome-desktop",
+    `url("${invitationConfig.welcome.desktopBackground}")`,
+  );
+  welcomeScreen.style.setProperty(
+    "--welcome-mobile",
+    `url("${invitationConfig.welcome.mobileBackground}")`,
+  );
+}
 
 const setText = (selector, value) => {
   document.querySelectorAll(selector).forEach((node) => {
@@ -404,11 +421,12 @@ if (socialLinks) {
 
 const music = document.getElementById("backgroundMusic");
 const musicToggle = document.getElementById("musicToggle");
+const openInvitationBtn = document.getElementById("openInvitationBtn");
+let playBackgroundMusic = async () => false;
 
 if (music && musicToggle) {
   music.src = invitationConfig.music.src;
   music.volume = invitationConfig.music.volume;
-  music.autoplay = true;
   music.playsInline = true;
 
   const updateMusicButton = () => {
@@ -432,6 +450,7 @@ if (music && musicToggle) {
       return false;
     }
   };
+  playBackgroundMusic = playMusic;
 
   const removeUnlockListeners = () => {
     document.removeEventListener("click", unlockMusic);
@@ -451,26 +470,6 @@ if (music && musicToggle) {
     }
   };
 
-  const tryAutoPlay = () => {
-    if (music.paused) {
-      playMusic();
-    }
-  };
-
-  tryAutoPlay();
-  window.addEventListener("DOMContentLoaded", tryAutoPlay);
-  window.addEventListener("load", tryAutoPlay);
-  window.addEventListener("pageshow", tryAutoPlay);
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      tryAutoPlay();
-    }
-  });
-
-  document.addEventListener("click", unlockMusic);
-  document.addEventListener("touchstart", unlockMusic);
-  document.addEventListener("pointerdown", unlockMusic);
-
   musicToggle.addEventListener("click", async (event) => {
     event.stopPropagation();
 
@@ -486,4 +485,36 @@ if (music && musicToggle) {
   });
 
   updateMusicButton();
+
+  if (!(welcomeScreen && openInvitationBtn)) {
+    const tryAutoPlay = () => {
+      if (music.paused) {
+        playMusic();
+      }
+    };
+
+    tryAutoPlay();
+    window.addEventListener("DOMContentLoaded", tryAutoPlay);
+    window.addEventListener("load", tryAutoPlay);
+    window.addEventListener("pageshow", tryAutoPlay);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        tryAutoPlay();
+      }
+    });
+
+    document.addEventListener("click", unlockMusic);
+    document.addEventListener("touchstart", unlockMusic);
+    document.addEventListener("pointerdown", unlockMusic);
+  }
+}
+
+if (welcomeScreen && openInvitationBtn) {
+  document.body.classList.add("welcome-active");
+
+  openInvitationBtn.addEventListener("click", async () => {
+    welcomeScreen.classList.add("is-hidden");
+    document.body.classList.remove("welcome-active");
+    await playBackgroundMusic();
+  });
 }

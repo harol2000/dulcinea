@@ -41,6 +41,10 @@ body {
     linear-gradient(180deg, #fff9fc 0%, #fff8f2 50%, #fffdf8 100%);
 }
 
+body.welcome-active {
+  overflow: hidden;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -62,6 +66,121 @@ h3 {
   position: relative;
   top: -6rem;
   visibility: hidden;
+}
+
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background-color: #f9dce5;
+  background-image: var(--welcome-desktop, url("/images/plantilla_escritorio.png"));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+
+.welcome-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.welcome-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 229, 238, 0.58), rgba(255, 236, 244, 0.74)),
+    radial-gradient(circle at top, rgba(255, 246, 250, 0.55), transparent 36%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.welcome-card {
+  position: relative;
+  z-index: 2;
+  width: min(90vw, 28.75rem);
+  padding: 2.625rem 2rem;
+  text-align: center;
+  background: rgba(255, 248, 250, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 2.25rem;
+  box-shadow: 0 28px 70px rgba(126, 45, 82, 0.18);
+}
+
+.welcome-card::before,
+.welcome-card::after {
+  content: "♥";
+  position: absolute;
+  color: rgba(216, 79, 131, 0.18);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.welcome-card::before {
+  top: 1rem;
+  left: 1.15rem;
+}
+
+.welcome-card::after {
+  right: 1.15rem;
+  bottom: 1rem;
+}
+
+.welcome-logo {
+  width: 8.125rem;
+  height: 8.125rem;
+  object-fit: contain;
+  margin: 0 auto 1.125rem;
+  filter: drop-shadow(0 16px 28px rgba(164, 59, 98, 0.18));
+}
+
+.welcome-eyebrow {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  font-weight: 800;
+  color: #c84f7d;
+}
+
+.welcome-card h1 {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(3.2rem, 8vw, 5rem);
+  line-height: 0.9;
+  color: #5b3046;
+}
+
+.welcome-card p {
+  margin: 1.125rem 0 1.75rem;
+  font-size: 1.1rem;
+  color: #7b3a58;
+  font-weight: 600;
+}
+
+.open-invitation-btn {
+  min-height: 3.375rem;
+  padding: 0 1.875rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e4548a, #c83e73);
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  font-family: "Nunito Sans", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 16px 34px rgba(200, 62, 115, 0.32);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.open-invitation-btn:hover,
+.open-invitation-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px rgba(200, 62, 115, 0.42);
 }
 
 .hero-inauguracion {
@@ -274,6 +393,12 @@ h3 {
   color: var(--rose-600);
 }
 
+.hero-content .eyebrow {
+  font-size: 0.9rem;
+  letter-spacing: 0.24em;
+  font-weight: 800;
+}
+
 .hero-name,
 .section-header h2,
 .info-card h3,
@@ -347,6 +472,10 @@ h3 {
   flex-wrap: wrap;
 }
 
+.hero-actions {
+  align-items: center;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -383,6 +512,21 @@ h3 {
   background: rgba(255, 250, 252, 0.4);
   color: var(--berry-900);
   border: 1px solid rgba(191, 81, 120, 0.25);
+}
+
+.hero-icon-button {
+  width: 3.1rem;
+  min-width: 3.1rem;
+  height: 3.1rem;
+  min-height: 3.1rem;
+  padding: 0;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.hero-icon-button .social-icon {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .button-small {
@@ -1220,6 +1364,27 @@ h3 {
 }
 
 @media (max-width: 768px) {
+  .welcome-screen {
+    background-image: var(--welcome-mobile, url("/images/plantilla_celular.png"));
+    background-position: center top;
+  }
+
+  .welcome-card {
+    width: min(88vw, 22.5rem);
+    padding: 2.125rem 1.5rem;
+    border-radius: 1.875rem;
+  }
+
+  .welcome-logo {
+    width: 7.1875rem;
+    height: 7.1875rem;
+  }
+
+  .open-invitation-btn {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
   .hero-navbar {
     display: none;
   }
@@ -1328,12 +1493,12 @@ h3 {
   .hero-mobile-eyebrow {
     display: block;
     position: absolute;
-    top: 4.5%;
+    top: 3%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
     margin: 0;
-    font-size: 0.72rem;
+    font-size: 1.44rem;
     letter-spacing: 0.28em;
     font-weight: 800;
     text-transform: uppercase;
