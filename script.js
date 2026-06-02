@@ -56,7 +56,7 @@ const invitationConfig = {
   },
   music: {
     // Cambia esta ruta si reemplazas la canción principal.
-    src: "./public/with_or_with_you.mp3",
+    src: "./with_or_with_you.mp3",
     volume: 0.35,
   },
   content: {
@@ -513,15 +513,16 @@ if (music && musicToggle) {
 if (welcomeScreen && openInvitationBtn) {
   document.body.classList.add("welcome-active");
 
-  const primeWelcomeMusic = () => {
-    playBackgroundMusic();
-  };
+  openInvitationBtn.addEventListener("click", async () => {
+    if (music) {
+      try {
+        music.currentTime = 0;
+        await playBackgroundMusic();
+      } catch (error) {
+        console.warn("No se pudo reproducir la música:", error);
+      }
+    }
 
-  openInvitationBtn.addEventListener("pointerdown", primeWelcomeMusic, { passive: true });
-  openInvitationBtn.addEventListener("touchstart", primeWelcomeMusic, { passive: true });
-
-  openInvitationBtn.addEventListener("click", () => {
-    primeWelcomeMusic();
     welcomeScreen.classList.add("is-hidden");
     document.body.classList.remove("welcome-active");
   });
