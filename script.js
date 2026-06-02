@@ -13,15 +13,32 @@ const invitationConfig = {
     mobile: "./public/images/plantilla_celular.png",
   },
   event: {
-    date: "Viernes 5 de mayo",
-    time: "5:30 p. m.",
+    date: "Viernes 5 de junio",
+    time: "5:00 p. m.",
     // Cambia esta fecha/hora para actualizar la cuenta regresiva del sitio.
-    countdownTarget: "2028-05-05T17:30:00",
-    address: "Jr. Huascar S/N, Ref. Frente al Mercado Modelo Pichari",
-    googleMapsUrl: "https://maps.app.goo.gl/pydPWiMrCYSjDKtp6",
+    countdownTarget: "2026-06-05T17:00:00",
+    locationTitle: "Encuéntranos fácilmente en Pichari.",
+    locationDescription:
+      "Te dejamos una referencia clara para que puedas llegar fácilmente a Dulcinea. La ubicación es referencial y puedes abrir la zona en Google Maps.",
+    address: "Jr. Huáscar S/N - Pichari",
+    addressReference:
+      "Entre La Casa del Rock Pichari y Mayorista Todo Barato, cerca del Mercado Modelo Pichari.",
+    mapButtonText: "Abrir zona en Google Maps",
+    googleMapsUrl: "https://maps.app.goo.gl/aoLhuBPgmgqH7mZq8",
+    detailsAddress: "Jr. Huáscar S/N",
+    detailsPlaceNote: "Pichari, referencia frente al Mercado Modelo.",
+    detailsMapText: "Abre la zona en Google Maps y guíate con la referencia.",
+    specialtiesCount: "2 especialidades",
+    specialtiesNote: "Sodas Italianas y Popping Boba",
+    aboutDateShort: "5 de junio",
+    aboutDateNote: "Fecha de apertura",
+    aboutTimeShort: "5:00 p. m.",
+    aboutTimeNote: "Hora de inicio",
+    aboutSpecialtiesShort: "Sodas y Boba",
+    aboutSpecialtiesNote: "Sodas Italianas y Popping Boba",
     // Pega aquí tu iframe definitivo de Google Maps cuando lo tengas listo.
     mapEmbedHtml:
-      '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d834.9047337878643!2d-73.8268573845473!3d-12.519193000277571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses-419!2spe!4v1780418027008!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+      '<iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d243.43444288337054!2d-73.82725428136864!3d-12.519399438577665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTLCsDMxJzA5LjYiUyA3M8KwNDknMzcuNyJX!5e0!3m2!1ses-419!2spe!4v1780425439152!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
   },
   contact: {
     phone: "984797618",
@@ -31,6 +48,11 @@ const invitationConfig = {
     facebookUrl: "https://www.instagram.com/dulcinea_sf_e.i.r.l/",
     instagramLabel: "@dulcinea_sf_e.i.r.l",
     instagramUrl: "https://www.instagram.com/dulcinea_sf_e.i.r.l/",
+  },
+  music: {
+    // Cambia esta ruta si reemplazas la canción principal.
+    src: "./public/with_or_with_you.mp3",
+    volume: 0.35,
   },
   content: {
     heroMessage:
@@ -187,25 +209,7 @@ const setLink = (selector, href) => {
 };
 
 const withAssetVersion = (path) => `${path}?v=${encodeURIComponent(invitationConfig.assetVersion)}`;
-const specialtyImageBases = ["./public/images/", "./public/images/productos/"];
-const resolveSpecialtyCandidates = (filename) =>
-  specialtyImageBases.map((basePath) => withAssetVersion(`${basePath}${filename}`));
-const setImageSourceWithFallback = (imageNode, candidates) => {
-  let currentIndex = 0;
-
-  const applyCandidate = () => {
-    imageNode.src = candidates[currentIndex];
-  };
-
-  imageNode.addEventListener("error", () => {
-    currentIndex += 1;
-    if (currentIndex < candidates.length) {
-      applyCandidate();
-    }
-  });
-
-  applyCandidate();
-};
+const resolveSpecialtyImage = (filename) => withAssetVersion(`./public/images/${filename}`);
 
 setText("[data-opening-label]", invitationConfig.business.openingLabel);
 setText("[data-business-name]", invitationConfig.business.name);
@@ -218,6 +222,21 @@ setText("[data-hero-message]", invitationConfig.content.heroMessage);
 setText("[data-event-date]", invitationConfig.event.date);
 setText("[data-event-time]", invitationConfig.event.time);
 setText("[data-event-address]", invitationConfig.event.address);
+setText("[data-details-address]", invitationConfig.event.detailsAddress);
+setText("[data-details-place-note]", invitationConfig.event.detailsPlaceNote);
+setText("[data-details-map-text]", invitationConfig.event.detailsMapText);
+setText("[data-specialties-count]", invitationConfig.event.specialtiesCount);
+setText("[data-specialties-note]", invitationConfig.event.specialtiesNote);
+setText("[data-about-date-short]", invitationConfig.event.aboutDateShort);
+setText("[data-about-date-note]", invitationConfig.event.aboutDateNote);
+setText("[data-about-time-short]", invitationConfig.event.aboutTimeShort);
+setText("[data-about-time-note]", invitationConfig.event.aboutTimeNote);
+setText("[data-about-specialties-short]", invitationConfig.event.aboutSpecialtiesShort);
+setText("[data-about-specialties-note]", invitationConfig.event.aboutSpecialtiesNote);
+setText("[data-location-title]", invitationConfig.event.locationTitle);
+setText("[data-location-description]", invitationConfig.event.locationDescription);
+setText("[data-address-reference]", invitationConfig.event.addressReference);
+setText("[data-map-button-text]", invitationConfig.event.mapButtonText);
 setText("[data-about-text]", invitationConfig.content.aboutText);
 setText("[data-contact-phone]", invitationConfig.contact.phone);
 setText("[data-contact-facebook]", invitationConfig.contact.facebookLabel);
@@ -308,7 +327,7 @@ specialties.forEach((item) => {
     const image = document.createElement("img");
     image.alt = `${item.title} ${index + 1}`;
     image.loading = "lazy";
-    setImageSourceWithFallback(image, resolveSpecialtyCandidates(filename));
+    image.src = resolveSpecialtyImage(filename);
 
     imageWrap.appendChild(image);
     imageGroup.appendChild(imageWrap);
@@ -381,4 +400,90 @@ if (socialLinks) {
     }
     socialLinks.appendChild(node);
   });
+}
+
+const music = document.getElementById("backgroundMusic");
+const musicToggle = document.getElementById("musicToggle");
+
+if (music && musicToggle) {
+  music.src = invitationConfig.music.src;
+  music.volume = invitationConfig.music.volume;
+  music.autoplay = true;
+  music.playsInline = true;
+
+  const updateMusicButton = () => {
+    if (music.paused) {
+      musicToggle.textContent = "♪ Música";
+      musicToggle.classList.remove("is-playing");
+    } else {
+      musicToggle.textContent = "♪ Pausar";
+      musicToggle.classList.add("is-playing");
+    }
+  };
+
+  const playMusic = async () => {
+    try {
+      await music.play();
+      updateMusicButton();
+      return true;
+    } catch (error) {
+      // Algunos navegadores bloquean autoplay hasta la primera interacción.
+      updateMusicButton();
+      return false;
+    }
+  };
+
+  const removeUnlockListeners = () => {
+    document.removeEventListener("click", unlockMusic);
+    document.removeEventListener("touchstart", unlockMusic);
+    document.removeEventListener("pointerdown", unlockMusic);
+  };
+
+  const unlockMusic = async () => {
+    if (!music.paused) {
+      removeUnlockListeners();
+      return;
+    }
+
+    const started = await playMusic();
+    if (started) {
+      removeUnlockListeners();
+    }
+  };
+
+  const tryAutoPlay = () => {
+    if (music.paused) {
+      playMusic();
+    }
+  };
+
+  tryAutoPlay();
+  window.addEventListener("DOMContentLoaded", tryAutoPlay);
+  window.addEventListener("load", tryAutoPlay);
+  window.addEventListener("pageshow", tryAutoPlay);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      tryAutoPlay();
+    }
+  });
+
+  document.addEventListener("click", unlockMusic);
+  document.addEventListener("touchstart", unlockMusic);
+  document.addEventListener("pointerdown", unlockMusic);
+
+  musicToggle.addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+    if (music.paused) {
+      const started = await playMusic();
+      if (started) {
+        removeUnlockListeners();
+      }
+    } else {
+      music.pause();
+      updateMusicButton();
+    }
+  });
+
+  updateMusicButton();
 }

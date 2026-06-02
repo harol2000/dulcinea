@@ -20,7 +20,8 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  const requestedPath = req.url === "/" ? "/index.html" : req.url;
+  const requestUrl = new URL(req.url, `http://${host}:${port}`);
+  const requestedPath = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
   const safePath = path.normalize(decodeURIComponent(requestedPath)).replace(/^(\.\.[/\\])+/, "");
   const filePath = path.join(rootDir, safePath);
 

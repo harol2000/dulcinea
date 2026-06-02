@@ -172,37 +172,37 @@
             </p>
           </div>
 
-          <div class="details-grid">
-            <article class="info-card">
+          <div class="details-grid event-details-grid">
+            <article class="info-card event-card">
               <p class="info-card__label">Fecha</p>
               <h3 data-event-date></h3>
               <p>Te esperamos para brindar por este nuevo comienzo.</p>
             </article>
 
-            <article class="info-card">
+            <article class="info-card event-card">
               <p class="info-card__label">Hora</p>
               <h3 data-event-time></h3>
               <p>Llega con tiempo para disfrutar promociones y sorpresas.</p>
             </article>
 
-            <article class="info-card">
+            <article class="info-card event-card">
               <p class="info-card__label">Lugar</p>
-              <h3 data-event-address></h3>
-              <p>Encuéntranos fácilmente frente al Mercado Modelo Pichari.</p>
+              <h3 data-details-address></h3>
+              <p data-details-place-note></p>
             </article>
 
-            <article class="info-card info-card--accent">
+            <article class="info-card info-card--accent event-card">
               <p class="info-card__label">Mapa</p>
               <h3>Cómo llegar</h3>
-              <p>Abre la ubicación en Google Maps y ven directo a Dulcinea.</p>
+              <p data-details-map-text></p>
               <a
                 class="button button-primary button-small"
                 data-maps-link
                 href="#ubicacion"
                 target="_blank"
                 rel="noreferrer"
+                data-map-button-text
               >
-                Abrir Google Maps
               </a>
             </article>
           </div>
@@ -213,11 +213,12 @@
         <div class="section-shell about-grid">
           <div class="section-header section-header--compact">
             <p class="section-label">Sobre la inauguración</p>
-            <h2>Un rincón dulce y acogedor para volver una y otra vez.</h2>
+            <h2>Un rincón dulce y acogedor para compartir.</h2>
             <p data-about-text></p>
           </div>
 
           <aside class="about-panel surface-card">
+            <span class="about-panel__sparkle" aria-hidden="true">♥</span>
             <p class="about-panel__label">Dulcinea</p>
             <h3>Heladería & Cafetería</h3>
             <p>
@@ -225,19 +226,23 @@
               memorables en buena compañía.
             </p>
             <div class="about-highlights">
-              <div>
-                <strong data-event-date></strong>
-                <span>Fecha de apertura</span>
+              <div class="about-stat">
+                <span>Fecha</span>
+                <strong data-about-date-short></strong>
+                <small data-about-date-note></small>
               </div>
-              <div>
-                <strong data-event-time></strong>
-                <span>Hora de inicio</span>
+              <div class="about-stat">
+                <span>Hora</span>
+                <strong data-about-time-short></strong>
+                <small data-about-time-note></small>
               </div>
-              <div>
-                <strong>6+</strong>
-                <span>Experiencias destacadas</span>
+              <div class="about-stat specialties-stat">
+                <span>Especialidades</span>
+                <strong data-about-specialties-short></strong>
+                <small data-about-specialties-note></small>
               </div>
             </div>
+            <a class="button button-primary button-small" href="#especialidades">Ver especialidades</a>
           </aside>
         </div>
       </section>
@@ -294,16 +299,17 @@
           <div class="location-copy">
             <div class="section-header section-header--compact">
               <p class="section-label">Ubicación</p>
-              <h2>Visítanos en el corazón de Pichari.</h2>
-              <p>
-                Encuentra la dirección completa, abre el mapa en Google Maps y deja listo el punto
-                exacto cuando quieras insertar tu iframe definitivo.
-              </p>
+              <h2 data-location-title></h2>
+              <p data-location-description></p>
             </div>
 
             <div class="location-card surface-card">
-              <p class="info-card__label">Dirección</p>
+              <p class="info-card__label">Dirección referencial</p>
               <h3 data-event-address></h3>
+              <div class="reference-box">
+                <span class="reference-chip">Referencia</span>
+                <p data-address-reference></p>
+              </div>
               <div class="location-actions">
                 <a
                   class="button button-primary"
@@ -311,8 +317,8 @@
                   href="#"
                   target="_blank"
                   rel="noreferrer"
+                  data-map-button-text
                 >
-                  Abrir en Google Maps
                 </a>
               </div>
             </div>
@@ -414,6 +420,24 @@
         </div>
       </section>
     </main>
+
+    <audio
+      id="backgroundMusic"
+      src="./public/with_or_with_you.mp3"
+      autoplay
+      loop
+      preload="auto"
+      playsinline
+    ></audio>
+
+    <button
+      id="musicToggle"
+      class="music-toggle"
+      type="button"
+      aria-label="Pausar o reproducir música"
+    >
+      ♪ Música
+    </button>
 
     <footer class="site-footer">
       <div class="footer-signature">
